@@ -1,0 +1,140 @@
+directories         
+    pwd - prints current working directory 
+    ls - prints names of files and directories in current working directory  
+    cd - navigates between directories
+
+displaying contents of files 
+    cat - displays content of files
+    head - only displays first 10 lines of file
+        head -n 5 updates.txt
+    tail - shows last 10 lines of file
+    less - returns content of file one page at a time
+        Space bar: Move forward one page
+
+        b: Move back one page
+
+        Down arrow: Move forward one line
+
+        Up arrow: Move back one line
+
+        q: Quit and return to the previous terminal window
+
+man hier - learn more about FHS
+
+whoami - returns username of current user
+
+finding what you need in Linux 
+    grep - searches specified file and returns all lines containing specified string
+        grep contents bash_commands.txt
+
+        uses backslashes to escape chars 
+            "testing test" tester
+            grep "\"testing test\"" bash_commands.txt
+
+    | - piping; sends standard output of command as standard input to another command
+
+    combine grep, pipe, and ls to search multiple files 
+        ls /home/analyst/reports | grep users
+            will return all files and directories that contain "users" in their file name (does not search files)
+
+    find - searches for directories or files that meed specified criteria 
+        ex: 
+            - contain string in name    
+            - file size 
+            - last modified time
+
+        options: 
+            -name and -iname 
+                searches files and dirs for keyword 
+
+                find /home/analyst/projects -name "*log*"
+                    Note: An asterisk (*) is used as a wildcard to represent zero or more unknown characters.
+            
+            -mtime 
+                finds based on modification time
+
+                find /home/analyst/projects -mtime -3
+                    modified within the last 3 days
+
+                    can change + or - 
+                        + is more than 3 days 
+                        - less than 3 days
+                
+                -mmin can be used for minutes instead of days
+
+Create and modify files and directories
+    mkdir - creates a new directory 
+    rmdir - removes or deletes a directory 
+
+    touch - creates a new file
+    rm - removes or deletes a file 
+
+    mv - move file/dir to new location
+        can also be used to rename files 
+            mv permissions.txt perm.txt
+    cp - copy file/dir to new location
+
+    nano to open editor
+        will also create a file if specified file does not exist
+
+    > and >> - can be used to redirect standard output 
+        > overwrites existing file 
+        >> adds to end of file
+
+File permissions and ownership 
+    ls -l = displays permissions to files and directories
+    ls -a = displays hidden files 
+    ls -la = displays permssions to files and dirs including hidden files 
+
+Change permissions  
+    chmod g+w,o-r access.txt
+    chmod u+rwx,g+rwx,o+rwx login_sessions.txt
+    chmod u=r,g=r,o=r login_sessions.txt
+        sets or assigns permissions exactly as specified 
+        this command would make user, group, and other only have read permissions
+
+Add and delete users 
+    sudo - grants temporary super user permissions 
+    useradd - adds user to system
+        can only be done by root or sudo user 
+        
+        sudo useradd salesrep7
+
+        options 
+            -g = sets the users default group or primary group 
+                sudo useradd -g security fgarcia
+            -G = adds user to additional groups or supplemental/secondary groups
+                sudo useradd -G finance,admin fgarcia
+    userdel - removes user from system
+        does not delete files in user's home directory without: 
+            -r option
+
+        Note: When you create a new user in Linux, a group with the same name as the user is automatically created and the user is the only member of that group. After removing users, it is good practice to clean up any such empty groups that may remain behind.
+            sudo groupdel researcher9
+    usermod - modifies existing user accounts 
+        -g and -G work 
+
+        sudo usermod -g executive fgarcia
+
+        sudo usermod -a -G marketing fgarcia
+            -a will append the user to an existing group 
+                without this, -G will replace any existing supplemental groups 
+
+            -d: Changes the user’s home directory.
+            -l: Changes the user’s login name.
+            -L: Locks the account so the user can’t log in.
+
+    chown - changes ownership of a file or directory 
+        sudo chown fgarcia access.txt
+            changes user owner 
+        sudo chown :security access.txt
+            changes group owner
+
+Man pages within the shell
+    man - displays info on other commands and how they work 
+    whatis - display description of command on a single line 
+    apropos - searches manual page descriptions for specified string
+        -a = searches for commands that contain all strings 
+
+Hashing a file 
+    sha256sum newfile.txt 
